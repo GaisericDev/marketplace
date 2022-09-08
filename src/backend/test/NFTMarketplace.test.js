@@ -19,6 +19,10 @@ describe("NFTMarketplace", async () => {
         it("Should track name + symbol of the nft collection", async () => {
             expect(await nft.name()).to.equal("Test NFT");
             expect(await nft.symbol()).to.equal("TEST");
+        });
+        it("Should track feeAccount + feePercent of marketplace", async () => {
+            expect(await marketplace.feePercent()).to.equal(1);
+            expect(await marketplace.feeAccount()).to.equal(deployer.address);
         })
     })
 });
