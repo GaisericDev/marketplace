@@ -33,16 +33,18 @@ describe("NFTMarketplace", async () => {
 
     describe('Minting NFTs', () => {
         it("Should track minted NFTs", async () => {
-            //addr1 mints NFT
+            // addr1 mints NFT
             await nft.connect(addr1).mint(1);
             expect(await nft.totalSupply()).to.equal(1);
             expect(await nft.balanceOf(addr1.address)).to.equal(1);
             expect(await nft.tokenURI(0)).to.equal(`${URI}/0.json`);
-            //addr2 mints NFT
+            // addr2 mints NFT
             await nft.connect(addr2).mint(1);
             expect(await nft.totalSupply()).to.equal(2);
             expect(await nft.balanceOf(addr2.address)).to.equal(1);
             expect(await nft.tokenURI(1)).to.equal(`${URI}/1.json`);
+            // query non existent token
+            await expect(nft.tokenURI(69)).to.be.revertedWith("Token non existent");
         });
     })
 
