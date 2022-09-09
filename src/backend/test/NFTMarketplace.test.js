@@ -2,7 +2,7 @@ const {expect} = require("chai");
 const { ethers } = require("hardhat");
 
 const toWei = (num) => ethers.utils.parseEther(num.toString());
-const fromWei = (num) => ethers.utils.formatEther(num);
+const fromWei = (num) => ethers.utils.formatEther(num, );
 
 describe("NFTMarketplace", async () => {
     let deployer, addr1, addr2, nft, marketplace;
@@ -84,5 +84,48 @@ describe("NFTMarketplace", async () => {
                 marketplace.connect(addr1).makeItem(nft.address, 1, 0)
             ).to.be.revertedWith("Price must be greater than zero");
         })
+    });
+
+    describe("Purchasing marketplace items", async () => {
+        let price = 2;
+        beforeEach(async () => {
+            // mint nft
+            await nft.connect(addr1).mint(1);
+            // approve marketplace to spend nft
+            await nft.connect(addr1).setApprovalForAll(marketplace.address, true);
+            // list on marketplace at price of 2 eth
+            await marketplace.connect(addr1).makeItem(nft.address, 0, toWei(price))
+        });
+        it("Should update item as sold, pay seller, transfer NFT to buyer, charge fees and emit Bought event", async () => {
+            // get balances before transaction
+            const sellerInitEth = await addr1.getBalance();
+            const feeAccInitEth = await deployer.getBalance();
+            // total price = price + fees
+            let totalPriceInWei = await marketplace.getTotalPrice(0);
+            // addr2 buys item
+            await expect(marketplace.connect(addr2).purchaseItem(0, {value: totalPriceInWei}))
+            .to.emit(marketplace, "Bought")
+            .withArgs(
+                0,
+                nft.address,
+                0,
+                toWei(price),
+                addr1.address,
+                addr2.address
+            );
+            // get balances after transaction
+            const sellerFinalEth = await addr1.getBalance();
+            const feeAccFinalEth = await deployer.getBalance();
+            // seller should receive payment for the price of the NFT sold
+            expect(+fromWei(sellerFinalEth)).to.equal(+price + +fromWei(sellerInitEth));
+            // calc fee
+            const fee = (feePercent / 100) * price;
+            // feeAcc should receive fee
+            expect(+fromWei(feeAccFinalEth)).to.equal(+fee + +fromWei(feeAccInitEth));
+            // buyer should now own nft
+            expect(await nft.ownerOf(0)).to.equal(addr2.address);
+            // item should be market as sold
+            expect((await marketplace.items(0)).sold).to.equal(true);
+        });
     });
 });
