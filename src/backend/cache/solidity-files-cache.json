@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\sebas\\Desktop\\dev\\marketplace\\src\\backend\\contracts\\NFT.sol": {
-      "lastModificationDate": 1662729607258,
-      "contentHash": "2acae8084e29ee6a9560c6cbc2556e74",
+      "lastModificationDate": 1662731168635,
+      "contentHash": "ddee16677ae9d46e0a6e00376c0094ce",
       "sourceName": "src/backend/contracts/NFT.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -29,7 +29,10 @@
         }
       },
       "imports": [
-        "erc721a/contracts/ERC721A.sol"
+        "erc721a/contracts/ERC721A.sol",
+        "@openzeppelin/contracts/utils/Address.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
       ],
       "versionPragmas": [
         "0.8.17"
@@ -548,6 +551,43 @@
       ],
       "artifacts": [
         "IERC721A"
+      ]
+    },
+    "C:\\Users\\sebas\\Desktop\\dev\\marketplace\\node_modules\\@openzeppelin\\contracts\\access\\Ownable.sol": {
+      "lastModificationDate": 1662638747820,
+      "contentHash": "e436cea06129be2c73cda4b1acc848b5",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
       ]
     }
   }
