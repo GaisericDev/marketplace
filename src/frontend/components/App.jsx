@@ -5,10 +5,11 @@ import NFTAddress from '../contractsData/NFT-address.json'
 
 import { useEffect, useState } from 'react'
 import { ethers } from "ethers"
-import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
+import { useWeb3React } from "@web3-react/core";
 
 import { WalletSelect } from './WalletSelect'
-
+import { networkParams } from "../utils/networks";
+import { connectors } from "../utils/connectors";
 import Button from '@mui/material/Button';
 
 import './App.css';
@@ -19,22 +20,6 @@ function App() {
   const [nft, setNFT] = useState({})
   const [marketplace, setMarketplace] = useState({})
 
-  // Network config
-  const networks = {
-    31337: "Localhost network",
-    1: "Ethereum mainnet",
-    4: "Rinkeby testnet"
-  }
-  const networkId = 1;
-
-  // Get web3 react library
-  const getLibrary = (provider) => {
-    const library = new ethers.providers.Web3Provider(provider);
-    library.pollingInterval = 8000; // frequency provider is polling
-    return library;
-  };
-
-  // Web3-react hook
   const {
     library,
     chainId,
@@ -54,6 +39,7 @@ function App() {
       loadContracts(signer);
     }
     catch(error){
+      console.log(error.message);
       setError(error.message);
     }
     finally{
@@ -79,7 +65,6 @@ function App() {
   }, [])
 
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
       <div className="App">
         { /* Connect Wallet */
         active
@@ -98,7 +83,6 @@ function App() {
         {/* Wallet Select Modal */}
         <WalletSelect open={open} setOpen={setOpen}></WalletSelect>
       </div>
-    </Web3ReactProvider>
   );
 }
 
