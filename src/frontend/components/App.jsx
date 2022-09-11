@@ -1,87 +1,60 @@
-import MarketplaceAbi from '../contractsData/Marketplace.json'
-import MarketplaceAddress from '../contractsData/Marketplace-address.json'
-import NFTAbi from '../contractsData/NFT.json'
-import NFTAddress from '../contractsData/NFT-address.json'
+import { Button } from "@mui/material";
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
+import {CoinbaseWalletSDK} from "@coinbase/wallet-sdk";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 
-import { useEffect, useState } from 'react'
-import { ethers } from "ethers"
-import { useWeb3React } from "@web3-react/core";
-
-import { WalletSelect } from './WalletSelect'
-import { networkParams } from "../utils/networks";
-import { connectors } from "../utils/connectors";
-import Button from '@mui/material/Button';
-
-import './App.css';
+import { useState } from "react";
 
 function App() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [nft, setNFT] = useState({})
-  const [marketplace, setMarketplace] = useState({})
 
-  const {
-    library,
-    chainId,
-    account,
-    activate,
-    deactivate,
-    active
-  } = useWeb3React();
+  const [web3Provider, setWeb3Provider] = useState(null);
 
-  // Connect browser to blockchain request
-  const initWeb3 = async () => {
-    setLoading(true);
-    setError("");
+  const providerOptions = {
+    /* See Provider Options Section */
+    coinbasewallet: {
+      package: CoinbaseWalletSDK,
+      options: {
+      appName: "NFT Marketplace",
+      infuraId: {1: import.meta.env.VITE_REACT_APP_INFURA_ID, 4: import.meta.env.VITE_REACT_APP_INFURA_ID}
+      }
+    },
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        infuraId: import.meta.env.VITE_REACT_APP_INFURA_ID
+      }
+    }
+  };
+  const connectWallet = async () => {
     try{
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      loadContracts(signer);
+      let web3Modal = new Web3Modal({
+        cacheProvider: false,
+        providerOptions
+      });
+      const web3ModalInstance = await web3Modal.connect();
+      const web3ModalProvider = new ethers.providers.Web3Provider(web3ModalInstance);
+      if(web3ModalProvider){
+        setWeb3Provider(web3ModalProvider);
+      }
     }
     catch(error){
       console.log(error.message);
-      setError(error.message);
-    }
-    finally{
-      setLoading(false);
     }
   }
-
-  // Load contracts
-  const loadContracts = async (signer) => {
-    // Get deployed copies of contracts
-    const marketplace = new ethers.Contract(MarketplaceAddress.address, MarketplaceAbi.abi, signer)
-    setMarketplace(marketplace)
-    const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer)
-    setNFT(nft)
-  }
-  
-  // Connect wallet button click handlers
-  const [open, setOpen] = useState(false);
-
-  // On load
-  useEffect(()=>{
-    initWeb3();
-  }, [])
 
   return (
       <div className="App">
-        { /* Connect Wallet */
-        active
-          ?
-          account
-          :
-          <Button
-            variant="contained"
-            size="large"
-            onClick={()=>{setOpen(true)}}
-          >
-              CONNECT WALLET
-          </Button>
+        {
+          web3Provider == null ? (
+            <Button onClick={connectWallet}>Open web3 modal</Button>
+          ) : (
+            <>
+              <p>Connected!</p>
+              <p>Address: {web3Provider.provider.selectedAddress}</p>
+            </>
+          )
         }
-
-        {/* Wallet Select Modal */}
-        <WalletSelect open={open} setOpen={setOpen}></WalletSelect>
       </div>
   );
 }
