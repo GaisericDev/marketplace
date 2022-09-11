@@ -11,8 +11,10 @@ async function main() {
     const NFT = await ethers.getContractFactory("NFT");
     const Marketplace = await ethers.getContractFactory("Marketplace");
     // deploy contracts
-    const nft = await NFT.deploy();
-    const marketplace = await Marketplace.deploy(1);
+    let uri = "baseuri";
+    let fee = 1
+    const nft = await NFT.deploy(uri);
+    const marketplace = await Marketplace.deploy(fee);
 
     console.log("NFT contract address:", nft.address);
     console.log(
