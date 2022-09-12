@@ -5,10 +5,21 @@ import {CoinbaseWalletSDK} from "@coinbase/wallet-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 
 import { useState } from "react";
+import { useEffect } from "react";
 
 function App() {
 
   const [web3Provider, setWeb3Provider] = useState(null);
+
+  // Handle chain changed
+  window.ethereum.on('chainChanged', (chainId) => {
+    window.location.reload();
+  })
+
+  // Handle acc changed
+  window.ethereum.on('accountsChanged', async () => {
+    connectWallet(true);
+  })
 
   const providerOptions = {
     /* See Provider Options Section */
@@ -26,10 +37,10 @@ function App() {
       }
     }
   };
-  const connectWallet = async () => {
+  const connectWallet = async (useCache) => {
     try{
       let web3Modal = new Web3Modal({
-        cacheProvider: false,
+        cacheProvider: useCache,
         providerOptions
       });
       const web3ModalInstance = await web3Modal.connect();
@@ -43,11 +54,16 @@ function App() {
     }
   }
 
+  useEffect(()=>{
+    connectWallet(true);
+  },[]);
+
+
   return (
       <div className="App">
         {
           web3Provider == null ? (
-            <Button onClick={connectWallet}>Open web3 modal</Button>
+            <Button onClick={()=>{connectWallet(false)}}>Open web3 modal</Button>
           ) : (
             <>
               <p>Connected!</p>
