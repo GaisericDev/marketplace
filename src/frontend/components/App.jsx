@@ -1,15 +1,25 @@
-import { Button } from "@mui/material";
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import {CoinbaseWalletSDK} from "@coinbase/wallet-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 
-import { useState } from "react";
-import { useEffect } from "react";
+import MarketplaceAbi from '../contractsData/Marketplace.json';
+import MarketplaceAddress from '../contractsData/Marketplace-address.json';
+import NFTAbi from '../contractsData/NFT.json';
+import NFTAddress from '../contractsData/NFT-address.json';
+
+import { Button } from "@mui/material";
+import { Spinner } from "react-bootstrap";
+
 
 function App() {
 
   const [web3Provider, setWeb3Provider] = useState(null);
+  const [signer, setSigner] = useState(null);
+  const [nft, setNFT] = useState({});
+  const [marketplace, setMarketplace] = useState({});
+  const [loading, setLoading] = useState(true);
 
   // Handle chain changed
   window.ethereum.on('chainChanged', (chainId) => {
@@ -21,8 +31,8 @@ function App() {
     connectWallet(true);
   })
 
+  // Web3Modal provider options
   const providerOptions = {
-    /* See Provider Options Section */
     coinbasewallet: {
       package: CoinbaseWalletSDK,
       options: {
@@ -37,7 +47,10 @@ function App() {
       }
     }
   };
+
+  // Connect wallet using web3modal
   const connectWallet = async (useCache) => {
+    setLoading(true);
     try{
       let web3Modal = new Web3Modal({
         cacheProvider: useCache,
@@ -47,15 +60,38 @@ function App() {
       const web3ModalProvider = new ethers.providers.Web3Provider(web3ModalInstance);
       if(web3ModalProvider){
         setWeb3Provider(web3ModalProvider);
+        const signer = web3ModalProvider.getSigner();
+        if(signer){
+          setSigner(signer)
+        }
+        else{
+          console.log("No signer");
+        }
       }
     }
     catch(error){
       console.log(error.message);
     }
+    finally{
+      setLoading(false);
+    }
   }
 
+  // Load all contracts
+  const loadContracts = async (signer) => {
+    // Get deployed copies of contracts
+    const marketplace = new ethers.Contract(MarketplaceAddress.address, MarketplaceAbi.abi, signer)
+    setMarketplace(marketplace)
+    const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer)
+    setNFT(nft)
+    setLoading(false);
+  }
+
+  // On load
   useEffect(()=>{
+    setLoading(true);
     connectWallet(true);
+    loadContracts(signer);
   },[]);
 
 
@@ -71,6 +107,18 @@ function App() {
             </>
           )
         }
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
+          {
+            loading ? (
+              <>
+                <Spinner animation="border" style={{ display: 'flex' }} />
+                <p className='mx-3 my-0'>Awaiting Metamask Connection...</p>
+              </>
+            ) : (
+              <p className='mx-3 my-0'>Content</p>
+            )
+          }
+        </div>
       </div>
   );
 }
