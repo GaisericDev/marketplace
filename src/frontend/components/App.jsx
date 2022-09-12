@@ -8,10 +8,12 @@ import MarketplaceAbi from '../contractsData/Marketplace.json';
 import MarketplaceAddress from '../contractsData/Marketplace-address.json';
 import NFTAbi from '../contractsData/NFT.json';
 import NFTAddress from '../contractsData/NFT-address.json';
+import { Navbar } from "./Navbar";
 
 import { Button } from "@mui/material";
 import { Spinner } from "react-bootstrap";
 
+import "./App.css";
 
 function App() {
 
@@ -97,25 +99,26 @@ function App() {
 
   return (
       <div className="App">
-        {
-          web3Provider == null ? (
-            <Button onClick={()=>{connectWallet(false)}}>Open web3 modal</Button>
-          ) : (
-            <>
-              <p>Connected!</p>
-              <p>Address: {web3Provider.provider.selectedAddress}</p>
-            </>
-          )
-        }
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
+        <Navbar></Navbar>
+        <div className="content">
+          {
+            web3Provider == null ? (
+              <Button onClick={()=>{connectWallet(false)}}>Open web3 modal</Button>
+            ) : (
+              <>
+                <p>Connected!</p>
+                <p>Address: {web3Provider.provider.selectedAddress}</p>
+              </>
+            )
+          }
           {
             loading ? (
               <>
-                <Spinner animation="border" style={{ display: 'flex' }} />
-                <p className='mx-3 my-0'>Awaiting Metamask Connection...</p>
+                <Spinner animation="border" className="spinner" />
+                <p>Awaiting Metamask Connection...</p>
               </>
             ) : (
-              <p className='mx-3 my-0'>Content</p>
+              <p>Content</p>
             )
           }
         </div>
