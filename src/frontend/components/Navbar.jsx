@@ -5,14 +5,19 @@ import OpenseaIcon from "../../assets/opensea.svg";
 import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Box from '@mui/material/Box';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import Divider from '@mui/material/Divider';
+
 export const Navbar = () => {
 
   // keep track of width and height of viewport
   const { height, width } = useWindowDimensions();
+  // nav menu items
+  const menuItems = ["Create", <AccountCircleOutlinedIcon sx={{height: 40, width: 40}}></AccountCircleOutlinedIcon>];
+  // drawer
   const [state, setState] = useState({
     left: false,
   });
-
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event &&
@@ -33,8 +38,9 @@ export const Navbar = () => {
     >
         <div>
             <ul>
-                <li>Test</li>
+                {menuItems.map((item, index)=>{ return (<li key={index}>{item}</li>)}).reverse()}
             </ul>
+            <Divider></Divider>
         </div>
     </Box>
   );
@@ -44,20 +50,18 @@ export const Navbar = () => {
     <div className="navbar">
         <div className="wrapper">
             <div className="item-left">
-                <img className="logo" src={OpenseaIcon} alt="React Logo" />
+                <img className="logo" src={OpenseaIcon} alt="Marketplace logo" />
                 Marketplace
             </div>
             <div className="items">
                 {
                     width <= 768 ? (
                         <div className="item">
-                            <MenuIcon onClick={toggleDrawer('left', true)}></MenuIcon>
+                            <MenuIcon onClick={toggleDrawer('left', true)} sx={{height: 40, width: 40}}></MenuIcon>
                         </div>
                     ) : (
                         <>
-                            <div className="item">SomeItem</div>
-                            <div className="item">SomeItem</div>
-                            <div className="item">SomeItem</div>
+                            {menuItems.map((item, index)=>{ return (<div className="item" key={index}>{item}</div>)})}
                         </>
                     )
                 }
