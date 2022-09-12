@@ -17,7 +17,6 @@
 .wrapper{
     display: flex;
     align-items: center;
-    justify-content: right;
     width: 100%;
 }
 
@@ -62,5 +61,6 @@
         width: 100vw;
         max-width: 100%;
         padding-left: 10px;
+        justify-content: right;
     }
 }
