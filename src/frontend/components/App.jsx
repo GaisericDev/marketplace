@@ -1,12 +1,19 @@
 import { Navbar } from "./Navbar";
-import { Home } from "./Home";
 import "./App.css";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { Home } from "./Home";
+import { NotFound } from "./NotFound";
 
 function App() {
   return (
       <div className="App">
         <Navbar></Navbar>
-        <Home></Home>
+        <Router basename="/">
+          <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="*" element={<NotFound></NotFound>}></Route>
+          </Routes>
+        </Router>
       </div>
   );
 }
