@@ -20,15 +20,3 @@ p{
 	box-sizing: border-box;
 }
 
-.content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  flex-direction: column;
-}
-
-.spinner {
-  display: flex;
-}
-
