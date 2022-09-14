@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import "./Navbar.css";
+import "./Navbar.scss";
 import useWindowDimensions from "../utils/useWindowDimensions";
 import OpenseaIcon from "../../assets/opensea.svg";
 import MenuIcon from '@mui/icons-material/Menu';
@@ -21,11 +21,6 @@ export const Navbar = (props) => {
   const {web3Provider} = useWeb3();
   // Keep track of width and height of viewport
   const { height, width } = useWindowDimensions();
-  // Nav menu items
-  const menuItems = [
-    <Link to="/create">Create</Link>
-    ,<AccountCircleOutlinedIcon sx={{height: 40, width: 40}}></AccountCircleOutlinedIcon>
-  ];
   // Dark mode switch
   const label = { inputProps: { 'aria-label': 'Switch' } };
   // Profile hover menu items
@@ -39,6 +34,27 @@ export const Navbar = (props) => {
       <Switch {...label} color="default" checked={props.check} onChange={props.change}></Switch>
     </div>
   ]
+  // Nav menu items
+  const menuItems = [
+    <Link to="/create"><div className="item">Create</div></Link>
+    ,<div className="item profileIcon">
+      <AccountCircleOutlinedIcon
+      sx={{height: 40, width: 40}}
+      >
+      </AccountCircleOutlinedIcon>
+      <div className={`profileDrawer ${props.isDarkMode && "dark"}`}>
+        <ul>
+          {personalItems.map((item, index)=>{
+            return (<li key={`personal${index}`}>{item}<Divider></Divider></li>)
+          })
+          }
+        </ul>
+      </div>
+      <div className="connectorV">
+      </div>
+      <div className="connectorH"></div>
+    </div>
+  ];
   // Drawer
   const [state, setState] = useState({
     top: false,
@@ -90,15 +106,7 @@ export const Navbar = (props) => {
                         </div>
                     ) : (
                         <>
-                            {menuItems.map((item, index)=>{ return (<div className="item" key={index}>{item}</div>)})}
-                            <div className={`profileDrawer ${props.isDarkMode && "dark"}`}>
-                              <ul>
-                                {personalItems.map((item, index)=>{
-                                  return (<li key={`personal${index}`}>{item}<Divider></Divider></li>)
-                                })
-                                }
-                              </ul>
-                            </div>
+                            {menuItems.map((item, index)=>{ return <>{item}</>})}
                         </>
                     )
                 }
