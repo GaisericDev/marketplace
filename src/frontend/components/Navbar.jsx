@@ -11,28 +11,35 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Divider from '@mui/material/Divider';
+import Switch from '@mui/material/Switch';
 import { useWeb3 } from '../context/Web3Context';
 import { Link } from 'react-router-dom';
 
-export const Navbar = () => {
+export const Navbar = (props) => {
 
-  // web3 provider
+  // Web3 provider
   const {web3Provider} = useWeb3();
-  // keep track of width and height of viewport
+  // Keep track of width and height of viewport
   const { height, width } = useWindowDimensions();
-  // nav menu items
+  // Nav menu items
   const menuItems = [
     <Link to="/create">Create</Link>
     ,<AccountCircleOutlinedIcon sx={{height: 40, width: 40}}></AccountCircleOutlinedIcon>
   ];
-  // profile hover menu items
+  // Dark mode switch
+  const label = { inputProps: { 'aria-label': 'Switch' } };
+  // Profile hover menu items
   const personalItems = [
     <Link to="account"><div className='personalListItem'><PersonIcon></PersonIcon>Profile</div></Link>
     ,<Link to="favorites"><div className='personalListItem'><FavoriteBorderIcon></FavoriteBorderIcon>Favorites</div></Link>
     ,<Link to="my-collections"><div className='personalListItem'><GridOnIcon></GridOnIcon>My Collections</div></Link>
-    ,<div className='personalListItem'><DarkModeIcon></DarkModeIcon>Night Mode</div>
+    ,<div className='personalListItem' onClick={props.change}>
+      <DarkModeIcon></DarkModeIcon>
+      Night Mode
+      <Switch {...label} color="default" checked={props.check} onChange={props.change}></Switch>
+    </div>
   ]
-  // drawer
+  // Drawer
   const [state, setState] = useState({
     top: false,
   });
@@ -67,13 +74,15 @@ export const Navbar = () => {
     <>
     <div className="navbar">
         <div className="wrapper">
+          {/* Navbar Left */}
             <Link to="/" className="item-left">
               <div>
                   <img className="logo" src={OpenseaIcon} alt="Marketplace logo" />
-                  Marketplace
+                  Marketplace {props.isDarkMode ? "Dark" : "Light"}
               </div>
             </Link>
             <div className="items">
+              {/* Navbar Right */}
                 {
                     width <= 768 ? (
                         <div className="item">
@@ -96,6 +105,7 @@ export const Navbar = () => {
             </div>
         </div>
     </div>
+    {/* Drawer */}
     <SwipeableDrawer
         anchor={"top"}
         open={state["top"]}
