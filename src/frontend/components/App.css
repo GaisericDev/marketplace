@@ -1,5 +1,8 @@
 html,
-body {
+body,
+#root,
+.App {
+  height: 100vh;
   min-height: 100%;
   margin: 0;
 }
@@ -29,7 +32,8 @@ ul {
 }
 
 .dark {
-  background-color: #111;
+  background-color: rgb(32, 34, 37);
+  color: white;
 }
 
 

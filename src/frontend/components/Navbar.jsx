@@ -72,7 +72,7 @@ export const Navbar = (props) => {
 
   return (
     <>
-    <div className="navbar">
+    <div className={`navbar ${props.isDarkMode && "dark"}`}>
         <div className="wrapper">
           {/* Navbar Left */}
             <Link to="/" className="item-left">
@@ -91,7 +91,7 @@ export const Navbar = (props) => {
                     ) : (
                         <>
                             {menuItems.map((item, index)=>{ return (<div className="item" key={index}>{item}</div>)})}
-                            <div className="profileDrawer">
+                            <div className={`profileDrawer ${props.isDarkMode && "dark"}`}>
                               <ul>
                                 {personalItems.map((item, index)=>{
                                   return (<li key={`personal${index}`}>{item}<Divider></Divider></li>)
