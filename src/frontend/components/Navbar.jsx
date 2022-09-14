@@ -21,6 +21,14 @@ export const Navbar = () => {
     <Link to="/create">Create</Link>
     ,<AccountCircleOutlinedIcon sx={{height: 40, width: 40}}></AccountCircleOutlinedIcon>
   ];
+  // profile hover menu items
+  const personalItems = [
+    <Link to="account"><div className='personalListItem'>Profile</div></Link>
+    ,<Link to="favorites"><div className='personalListItem'>Favorites</div></Link>
+    ,<Link to="watchlist"><div className='personalListItem'>Watchlist</div></Link>
+    ,<Link to="my-collections"><div className='personalListItem'>My Collections</div></Link>
+    ,<div className='personalListItem'>Night Mode</div>
+  ]
   // drawer
   const [state, setState] = useState({
     top: false,
@@ -71,6 +79,14 @@ export const Navbar = () => {
                     ) : (
                         <>
                             {menuItems.map((item, index)=>{ return (<div className="item" key={index}>{item}</div>)})}
+                            <div className="profileDrawer">
+                              <ul>
+                                {personalItems.map((item, index)=>{
+                                  return (<li key={`personal${index}`}>{item}<Divider></Divider></li>)
+                                })
+                                }
+                              </ul>
+                            </div>
                         </>
                     )
                 }
