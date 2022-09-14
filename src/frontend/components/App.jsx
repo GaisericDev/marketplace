@@ -10,8 +10,8 @@ function App() {
   return (
       <div className="App">
         <Web3ContextProvider>
-          <Navbar></Navbar>
           <Router basename="/">
+          <Navbar></Navbar>
             <Routes>
               <Route path="/" element={<Home/>}/>
               <Route path="*" element={<NotFound></NotFound>}></Route>

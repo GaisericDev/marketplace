@@ -47,6 +47,13 @@
     font-size: 30px;
 }
 
+.item-left > * {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
 .logo {
     height: 40px;
     width: 40px;

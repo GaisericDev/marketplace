@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Divider from '@mui/material/Divider';
 import { useWeb3 } from '../context/Web3Context';
+import { Link } from 'react-router-dom';
 
 export const Navbar = () => {
 
@@ -17,13 +18,12 @@ export const Navbar = () => {
   const { height, width } = useWindowDimensions();
   // nav menu items
   const menuItems = [
-    "Create"
+    <Link to="/create">Create</Link>
     ,<AccountCircleOutlinedIcon sx={{height: 40, width: 40}}></AccountCircleOutlinedIcon>
-    ,`Address: ${web3Provider.provider.selectedAddress}`
   ];
   // drawer
   const [state, setState] = useState({
-    left: false,
+    top: false,
   });
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -56,15 +56,17 @@ export const Navbar = () => {
     <>
     <div className="navbar">
         <div className="wrapper">
-            <div className="item-left">
-                <img className="logo" src={OpenseaIcon} alt="Marketplace logo" />
-                Marketplace
-            </div>
+            <Link to="/" className="item-left">
+              <div>
+                  <img className="logo" src={OpenseaIcon} alt="Marketplace logo" />
+                  Marketplace
+              </div>
+            </Link>
             <div className="items">
                 {
                     width <= 768 ? (
                         <div className="item">
-                            <MenuIcon onClick={toggleDrawer('left', true)} sx={{height: 40, width: 40}}></MenuIcon>
+                            <MenuIcon onClick={toggleDrawer('top', true)} sx={{height: 40, width: 40}}></MenuIcon>
                         </div>
                     ) : (
                         <>
@@ -76,12 +78,12 @@ export const Navbar = () => {
         </div>
     </div>
     <SwipeableDrawer
-        anchor={"left"}
-        open={state["left"]}
-        onClose={toggleDrawer("left", false)}
-        onOpen={toggleDrawer("left", true)}
+        anchor={"top"}
+        open={state["top"]}
+        onClose={toggleDrawer("top", false)}
+        onOpen={toggleDrawer("top", true)}
         >
-    {list("left")}
+    {list("top")}
     </SwipeableDrawer>
     </>
   )
