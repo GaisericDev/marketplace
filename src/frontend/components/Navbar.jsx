@@ -6,6 +6,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Box from '@mui/material/Box';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import PersonIcon from '@mui/icons-material/Person';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import GridOnIcon from '@mui/icons-material/GridOn';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Divider from '@mui/material/Divider';
 import { useWeb3 } from '../context/Web3Context';
 import { Link } from 'react-router-dom';
@@ -23,11 +27,10 @@ export const Navbar = () => {
   ];
   // profile hover menu items
   const personalItems = [
-    <Link to="account"><div className='personalListItem'>Profile</div></Link>
-    ,<Link to="favorites"><div className='personalListItem'>Favorites</div></Link>
-    ,<Link to="watchlist"><div className='personalListItem'>Watchlist</div></Link>
-    ,<Link to="my-collections"><div className='personalListItem'>My Collections</div></Link>
-    ,<div className='personalListItem'>Night Mode</div>
+    <Link to="account"><div className='personalListItem'><PersonIcon></PersonIcon>Profile</div></Link>
+    ,<Link to="favorites"><div className='personalListItem'><FavoriteBorderIcon></FavoriteBorderIcon>Favorites</div></Link>
+    ,<Link to="my-collections"><div className='personalListItem'><GridOnIcon></GridOnIcon>My Collections</div></Link>
+    ,<div className='personalListItem'><DarkModeIcon></DarkModeIcon>Night Mode</div>
   ]
   // drawer
   const [state, setState] = useState({

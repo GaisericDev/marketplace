@@ -3,12 +3,6 @@
     --navbar-height-extra: 70px;
 }
 
-ul {
-    list-style-type: none; 
-    padding: 0; 
-    margin: 0; 
-}
-
 .navbar {
     height: var(--navbar-height);
     border-bottom: 0.5px solid rgb(231,231,231);
@@ -74,8 +68,8 @@ ul {
 
 .profileDrawer {
     position: absolute;
-    height: 400px;
-    width: 400px;
+    height: auto;
+    width: auto;
     color: white;
     top: var(--navbar-height-extra);
     right: 3vw;
@@ -102,11 +96,24 @@ ul {
     outline: 0;
 }
 
+.profileDrawer li:hover {
+    box-shadow: 0 0px 6px 1px rgba(0,0,0,0.14);
+}
+
 .personalListItem{
     display: flex;
-    flex-direction: column;
-    align-items: left;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    font-size: 20px;
+    padding: 10px;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+    cursor:pointer;
+}
+
+.personalListItem > :first-child{
+    margin-right: 1vw;
 }
 
 @media screen and (max-width: 768px) {
@@ -123,11 +130,6 @@ ul {
         max-width: 100%;
         padding-left: 10px;
         justify-content: right;
-    }
-    ul {
-        list-style-type: none; 
-        padding: 0; 
-        margin: 0; 
     }
     li {
         display: flex;
