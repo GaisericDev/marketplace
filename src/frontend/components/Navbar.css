@@ -107,6 +107,9 @@
 
 .profileDrawer li:hover {
     box-shadow: 0 0px 6px 1px rgba(0,0,0,0.14);
+}
+
+.profileDrawer.dark li:hover {
     background-color: rgb(43, 45, 49);
 }
 
