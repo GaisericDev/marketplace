@@ -7,13 +7,20 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Box from '@mui/material/Box';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Divider from '@mui/material/Divider';
+import { useWeb3 } from '../context/Web3Context';
 
 export const Navbar = () => {
 
+  // web3 provider
+  const {web3Provider} = useWeb3();
   // keep track of width and height of viewport
   const { height, width } = useWindowDimensions();
   // nav menu items
-  const menuItems = ["Create", <AccountCircleOutlinedIcon sx={{height: 40, width: 40}}></AccountCircleOutlinedIcon>];
+  const menuItems = [
+    "Create"
+    ,<AccountCircleOutlinedIcon sx={{height: 40, width: 40}}></AccountCircleOutlinedIcon>
+    ,`Address: ${web3Provider.provider.selectedAddress}`
+  ];
   // drawer
   const [state, setState] = useState({
     left: false,

@@ -14,8 +14,8 @@ import { Spinner } from "react-bootstrap";
 import { useWeb3 } from '../context/Web3Context';
 
 export const Home = () => {
-    const {providerOptions, connectWallet, loadContracts, web3Provider, setWeb3Provider} = useWeb3();
-
+  // web3 provider
+  const {providerOptions, connectWallet, loadContracts, web3Provider, setWeb3Provider} = useWeb3();
   return (
     <div className="content">
     {
