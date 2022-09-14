@@ -3,17 +3,22 @@ import "./App.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "./Home";
 import { NotFound } from "./NotFound";
+import { Create } from "./Create";
+import { Web3ContextProvider } from "../context/Web3Context";
 
 function App() {
   return (
       <div className="App">
-        <Navbar></Navbar>
-        <Router basename="/">
-          <Routes>
-            <Route path="/" element={<Home/>}/>
-            <Route path="*" element={<NotFound></NotFound>}></Route>
-          </Routes>
-        </Router>
+        <Web3ContextProvider>
+          <Navbar></Navbar>
+          <Router basename="/">
+            <Routes>
+              <Route path="/" element={<Home/>}/>
+              <Route path="*" element={<NotFound></NotFound>}></Route>
+              <Route path="/create" element={<Create/>}></Route>
+            </Routes>
+          </Router>
+        </Web3ContextProvider>
       </div>
   );
 }
