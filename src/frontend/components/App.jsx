@@ -17,18 +17,18 @@ function App() {
   });
   return (
       <div className={`App ${darkMode && "dark"}`}>
+        <ThemeProvider theme={theme}>
         <Web3ContextProvider>
           <Router basename="/">
-          <ThemeProvider theme={theme}>
             <Navbar isDarkMode={darkMode} check={darkMode} change={()=>setDarkMode(!darkMode)}></Navbar>
             <Routes>
               <Route path="/" element={<Home/>}/>
               <Route path="*" element={<NotFound></NotFound>}></Route>
               <Route path="/create" element={<Create/>}></Route>
             </Routes>
-          </ThemeProvider>
           </Router>
         </Web3ContextProvider>
+        </ThemeProvider>
       </div>
   );
 }

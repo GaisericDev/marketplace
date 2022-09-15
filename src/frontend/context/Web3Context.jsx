@@ -20,20 +20,6 @@ export const Web3ContextProvider = ({children}) => {
     const [signer, setSigner] = useState(null);
     const [nft, setNFT] = useState({});
     const [marketplace, setMarketplace] = useState({});
-    // Handle chain changed
-    // useEffect(()=>{
-    //     const chainChanged = window.ethereum.on('chainChanged', (chainId) => {
-    //         window.location.reload();
-    //     })
-    //     return chainChanged;
-    // }, []);
-    // // Handle acc changed
-    // useEffect(()=>{
-    //     const accChanged = window.ethereum.on('accountsChanged', async () => {
-    //         connectWallet(true);
-    //     });
-    //     return accChanged;
-    // }, []);
     // Web3Modal provider options
     const providerOptions = {
             coinbasewallet: {
@@ -56,7 +42,8 @@ export const Web3ContextProvider = ({children}) => {
         try{
         let web3Modal = new Web3Modal({
             cacheProvider: useCache,
-            providerOptions
+            providerOptions,
+            
         });
         const web3ModalInstance = await web3Modal.connect();
         const web3ModalProvider = new ethers.providers.Web3Provider(web3ModalInstance);
@@ -91,9 +78,19 @@ export const Web3ContextProvider = ({children}) => {
     })
 
     // Handle acc changed
-    window.ethereum.on('accountsChanged', async () => {
+    window.ethereum.on('accountsChanged', async (accounts) => {
+        if(accounts.length == 0){
+           window.location.reload();
+           return;
+        }
         connectWallet(true);
     })
+
+    // Logout
+    const logout = async() => {
+        localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
+        window.location.reload();
+    }
 
     useEffect(()=>{
         connectWallet(true);
@@ -106,6 +103,7 @@ export const Web3ContextProvider = ({children}) => {
         ,loadContracts
         ,web3Provider
         ,setWeb3Provider
+        ,logout
     }
   return (
     <Web3Context.Provider value={value}>

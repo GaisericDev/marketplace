@@ -4,12 +4,16 @@ import PersonIcon from '@mui/icons-material/Person';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Switch from '@mui/material/Switch';
 import { Link } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import "./ProfileDrawer.scss";
+import { useWeb3 } from '../context/Web3Context';
 
 export const ProfileDrawer = (props) => {
+  // Web3 context
+  const {web3Provider, logout} = useWeb3();
   // Dark mode switch
   const label = { inputProps: { 'aria-label': 'Switch' } };
   // Profile hover menu items
@@ -17,6 +21,17 @@ export const ProfileDrawer = (props) => {
     <Link to="account"><div className='personalListItem'><PersonIcon></PersonIcon>Profile</div></Link>
     ,<Link to="favorites"><div className='personalListItem'><FavoriteBorderIcon></FavoriteBorderIcon>Favorites</div></Link>
     ,<Link to="my-collections"><div className='personalListItem'><GridOnIcon></GridOnIcon>My Collections</div></Link>
+    ,<>
+    {web3Provider != null
+      && 
+      web3Provider.provider.selectedAddress != null
+      && 
+      <div className='personalListItem' onClick={logout}>
+        <LogoutIcon></LogoutIcon>
+        Logout
+      </div>
+    }
+    </>
     ,<div className='personalListItem' onClick={props.change}>
       <DarkModeIcon></DarkModeIcon>
       Night Mode

@@ -15,7 +15,7 @@ import { useWeb3 } from '../context/Web3Context';
 
 export const Home = () => {
   // web3 provider
-  const {providerOptions, connectWallet, loadContracts, web3Provider, setWeb3Provider} = useWeb3();
+  const {connectWallet, web3Provider} = useWeb3();
   return (
     <div className="content">
     {

@@ -13,7 +13,7 @@ import { ProfileDrawer } from './ProfileDrawer';
 export const Navbar = (props) => {
 
   // Web3 provider
-  const {web3Provider} = useWeb3();
+  const {web3Provider, logout} = useWeb3();
   // Keep track of width and height of viewport
   const { height, width } = useWindowDimensions();
   // Nav menu items
