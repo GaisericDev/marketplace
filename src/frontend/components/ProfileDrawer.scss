@@ -57,7 +57,30 @@
 }
 
 .hoveredOff {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex: 1 0 auto;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
     animation: hoverOff 300ms forwards ease-out;
+}
+
+.extension {
+    height: 200px;
+    width: 250px;
+    position: absolute;
+    top: 35px;
+    right: 0;
+    display: none;
+}
+
+.visible {
+    display: flex;
 }
 
 .personalListItem{
@@ -74,21 +97,4 @@
 
 .personalListItem > :first-child{
     margin-right: 1vw;
-}
-
-.connectorV {
-    height: 400px;
-    width: 60px;
-    position: absolute;
-    right: 10px;
-    display: flex;
-}
-
-.connectorH {
-    width: 200px;
-    right: 0;
-    top: 50px;
-    height: 40px;
-    position: absolute;
-    display: flex;
 }

@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useRef} from 'react'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -26,18 +26,28 @@ export const ProfileDrawer = (props) => {
 
   const [isHovering, setIsHovering] = useState(false);
   const [hoveredOff, setHoveredOff] = useState(false);
-  const [isOnDiv, setIsOnDiv] = useState(false);
+  const timeRef = useRef(null);
+
+  // Add hovering class (trigger hover animation, toggled in the div using JSX)
   const hoverOn = () => {
-    //should add class hovering to trigger animation, will be done by setting hover state and checking it in the div
     setHoveredOff(false);
     setIsHovering(true);
   }
 
-  const hoverOff = () => {
-    // should add class that triggers hover off animation
-    !isOnDiv && setHoveredOff(true);
-    // setIsHovering(false);
+  // Remove hover off class
+  const removeHovered = () => {
+    setHoveredOff(false);
+    clearInterval(timeRef.current);
   }
+
+  // Remove hovering class, add hovering off class (trigger hover off animation), set timer to remove hovering off class when animation completes
+  const hoverOff = () => {
+    // should remove hover class to trigger hover out animation
+    setIsHovering(false);
+    setHoveredOff(true);
+    timeRef.current = setInterval(()=>{removeHovered()}, 300)
+  }
+
   return (
     <div className="item profileIcon" onMouseEnter={()=>{hoverOn()}} onMouseLeave={()=>{hoverOff()}}>
       <AccountCircleOutlinedIcon
@@ -52,9 +62,7 @@ export const ProfileDrawer = (props) => {
           }
         </ul>
       </div>
-      <div className="connectorV" onMouseEnter={()=>{setIsOnDiv(true)}} onMouseLeave={()=>{setIsOnDiv(false)}}>
-      </div>
-      <div className="connectorH" onMouseEnter={()=>{setIsOnDiv(true)}} onMouseLeave={()=>{setIsOnDiv(false)}}></div>
+      <div className={`extension ${isHovering && "visible"}`}></div>
     </div>
   )
 }
