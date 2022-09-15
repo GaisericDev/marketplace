@@ -6,14 +6,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import { useWeb3 } from '../context/Web3Context';
 import { Link } from 'react-router-dom';
 import { ProfileDrawer } from './ProfileDrawer';
 
 export const Navbar = (props) => {
-
-  // Web3 provider
-  const {web3Provider, logout} = useWeb3();
   // Keep track of width and height of viewport
   const { height, width } = useWindowDimensions();
   // Nav menu items

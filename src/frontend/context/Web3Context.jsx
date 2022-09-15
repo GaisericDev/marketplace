@@ -18,8 +18,10 @@ export const useWeb3 = () => {
 export const Web3ContextProvider = ({children}) => {
     const [web3Provider, setWeb3Provider] = useState(null);
     const [signer, setSigner] = useState(null);
-    const [nft, setNFT] = useState({});
+    const marketplaceAbi = MarketplaceAbi.abi;
+    const marketplaceAddr = MarketplaceAddress.address;
     const [marketplace, setMarketplace] = useState({});
+
     // Web3Modal provider options
     const providerOptions = {
             coinbasewallet: {
@@ -63,15 +65,6 @@ export const Web3ContextProvider = ({children}) => {
         }
     }
 
-    // Load all contracts
-    const loadContracts = async (signer) => {
-        // Get deployed copies of contracts
-        const marketplace = new ethers.Contract(MarketplaceAddress.address, MarketplaceAbi.abi, signer)
-        setMarketplace(marketplace)
-        const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer)
-        setNFT(nft)
-    }
-
     // Handle chain changed
     window.ethereum.on('chainChanged', (chainId) => {
         window.location.reload();
@@ -92,18 +85,48 @@ export const Web3ContextProvider = ({children}) => {
         window.location.reload();
     }
 
+    // Convert string to bignumber to pass to contract
+    const toWei = (num) => ethers.utils.parseEther(num.toString());
+
+    // Convert bignumber to string from contract
+    const fromWei = (num) => ethers.utils.formatEther(num, );
+
+    // Load marketplace contract
+    const loadMarketplace = async () => {
+        if(web3Provider == null){return};
+        const signer = web3Provider.getSigner();
+        if(signer){
+            const contract = new ethers.Contract(marketplaceAddr, marketplaceAbi, signer);
+            if(contract){
+                setMarketplace(contract);
+            }
+        }
+    }
+
+    // Connect wallet on load
     useEffect(()=>{
         connectWallet(true);
-        loadContracts(signer);
     },[]);
+
+    // Load marketplace contract when we have a web3 provider
+    useEffect(()=>{
+        if(Object.keys(marketplace).length === 0){
+            loadMarketplace();
+        } 
+    },[web3Provider])
+
     // Export context
     const value = {
         providerOptions
         ,connectWallet
-        ,loadContracts
         ,web3Provider
         ,setWeb3Provider
         ,logout
+        ,toWei
+        ,fromWei
+        ,marketplaceAddr
+        ,marketplaceAbi
+        ,marketplace
     }
   return (
     <Web3Context.Provider value={value}>

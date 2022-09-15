@@ -1,3 +1,13 @@
+const itemC = await contract.itemCount()
+const itemCount = await contract.itemCount()
+const itemCount = await b.itemCount();
+const contract = await b.attach('0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512')
+const b = await ethers.getContractFactory('Marketplace')
+const a = await ethers.getContractFactory('Marketplace')
+const a = await ethers.getContractAt("Marketplace", 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512);
+const m = await ethers.getContractAt("Marketplace", "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512");
+const marketplace = await ethers.getContractAt("Marketplace", "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512");
+const marketplace = await ethers.getContractAt("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512")
 .exit
 let tokenCount = await c.tokenCount()
 let name = await c.name()
