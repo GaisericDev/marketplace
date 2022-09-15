@@ -98,3 +98,10 @@
 .personalListItem > :first-child{
     margin-right: 1vw;
 }
+
+.profileImg {
+    object-fit: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}

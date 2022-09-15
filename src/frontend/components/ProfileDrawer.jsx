@@ -1,4 +1,4 @@
-import React,{useState, useRef} from 'react'
+import React,{useState, useRef, useEffect} from 'react'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -18,7 +18,12 @@ export const ProfileDrawer = (props) => {
   const label = { inputProps: { 'aria-label': 'Switch' } };
   // Profile hover menu items
   const personalItems = [
-    <Link to="account"><div className='personalListItem'><PersonIcon></PersonIcon>Profile</div></Link>
+    <Link to="account">
+      <div className='personalListItem'>
+        <PersonIcon></PersonIcon>
+        Profile
+      </div>
+      </Link>
     ,<Link to="favorites"><div className='personalListItem'><FavoriteBorderIcon></FavoriteBorderIcon>Favorites</div></Link>
     ,<Link to="my-collections"><div className='personalListItem'><GridOnIcon></GridOnIcon>My Collections</div></Link>
     ,<>
@@ -41,6 +46,7 @@ export const ProfileDrawer = (props) => {
 
   const [isHovering, setIsHovering] = useState(false);
   const [hoveredOff, setHoveredOff] = useState(false);
+  const [ranProfile, setRanProfile] = useState(0);
   const timeRef = useRef(null);
 
   // Add hovering class (trigger hover animation, toggled in the div using JSX)
@@ -63,12 +69,22 @@ export const ProfileDrawer = (props) => {
     timeRef.current = setInterval(()=>{removeHovered()}, 300)
   }
 
+  // Generate random profile picture for the time being as placeholder
+  useEffect(()=>{
+    setRanProfile(Math.floor(Math.random() * 34) + 1);
+  }, []);
+
   return (
     <div className="item profileIcon" onMouseEnter={()=>{hoverOn()}} onMouseLeave={()=>{hoverOff()}}>
-      <AccountCircleOutlinedIcon
-      sx={{height: 40, width: 40}}
-      >
-      </AccountCircleOutlinedIcon>
+      {web3Provider != null && web3Provider.provider.selectedAddress != null ?
+        <img className="profileImg" alt="profile img" src={`https://storage.googleapis.com/opensea-static/opensea-profile/${ranProfile}.png`}>
+        </img>
+        :
+        <AccountCircleOutlinedIcon
+        sx={{height: 40, width: 40}}
+        >
+        </AccountCircleOutlinedIcon>
+      }
       <div className={`profileDrawer ${props.isDarkMode && "dark"} ${isHovering && "isHovering"} ${hoveredOff && "hoveredOff"}`}>
         <ul>
           {personalItems.map((item, index)=>{
