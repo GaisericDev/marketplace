@@ -44,8 +44,8 @@
     cursor : pointer;
     font-weight: bold;
     font-size: 30px;
-
 }
+
 .item-left{
     margin-right: auto;
     margin-left: 3vw;
@@ -69,88 +69,6 @@
     height: 40px;
     width: 40px;
     margin-right: 20px;
-}
-
-.connectorV {
-    height: 400px;
-    width: 60px;
-    position: absolute;
-    right: 10px;
-    display: none;
-}
-
-.connectorH {
-    width: 200px;
-    right: 0;
-    top: 50px;
-    height: 40px;
-    position: absolute;
-    overflow: visible;
-    display: none;
-}
-
-.profileIcon:hover {
-    .connectorV, .connectorH{
-        display: flex;
-    }
-    .profileDrawer{
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        -webkit-flex: 1 0 auto;
-        -ms-flex: 1 0 auto;
-        flex: 1 0 auto;
-    }
-}
-.profileDrawer {
-    height: auto;
-    width: auto;
-    color: white;
-    border-radius: 15px;
-    background-color: #fff;
-    color: rgba(0, 0, 0, 0.87);
-    -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    box-shadow: 0px 8px 10px -5px rgba(0,0,0,0.2),0px 16px 24px 2px rgba(0,0,0,0.14),0px 6px 30px 5px rgba(0,0,0,0.12);
-    overflow-y: auto;
-    display: none;
-    z-index: 1200;
-    position: fixed;
-    outline: 0;
-    top: var(--navbar-height-extra);
-    right: 3vw;
-}
-
-.profileDrawer.dark{
-    background-color: rgb(54, 58, 63);
-}
-
-.profileDrawer li:hover {
-    box-shadow: 0 0px 6px 1px rgba(0,0,0,0.14);
-}
-
-.profileDrawer.dark li:hover {
-    background-color: rgb(43, 45, 49);
-}
-
-.personalListItem{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: start;
-    font-size: 20px;
-    padding: 10px;
-    margin-left: 0.5vw;
-    margin-right: 0.5vw;
-    cursor:pointer;
-}
-
-.personalListItem > :first-child{
-    margin-right: 1vw;
 }
 
 @media screen and (max-width: 768px) {

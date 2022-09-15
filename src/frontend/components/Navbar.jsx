@@ -5,15 +5,10 @@ import OpenseaIcon from "../../assets/opensea.svg";
 import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Box from '@mui/material/Box';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import PersonIcon from '@mui/icons-material/Person';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import GridOnIcon from '@mui/icons-material/GridOn';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Divider from '@mui/material/Divider';
-import Switch from '@mui/material/Switch';
 import { useWeb3 } from '../context/Web3Context';
 import { Link } from 'react-router-dom';
+import { ProfileDrawer } from './ProfileDrawer';
 
 export const Navbar = (props) => {
 
@@ -21,39 +16,10 @@ export const Navbar = (props) => {
   const {web3Provider} = useWeb3();
   // Keep track of width and height of viewport
   const { height, width } = useWindowDimensions();
-  // Dark mode switch
-  const label = { inputProps: { 'aria-label': 'Switch' } };
-  // Profile hover menu items
-  const personalItems = [
-    <Link to="account"><div className='personalListItem'><PersonIcon></PersonIcon>Profile</div></Link>
-    ,<Link to="favorites"><div className='personalListItem'><FavoriteBorderIcon></FavoriteBorderIcon>Favorites</div></Link>
-    ,<Link to="my-collections"><div className='personalListItem'><GridOnIcon></GridOnIcon>My Collections</div></Link>
-    ,<div className='personalListItem' onClick={props.change}>
-      <DarkModeIcon></DarkModeIcon>
-      Night Mode
-      <Switch {...label} color="default" checked={props.check} onChange={props.change}></Switch>
-    </div>
-  ]
   // Nav menu items
   const menuItems = [
     <Link to="/create"><div className="item">Create</div></Link>
-    ,<div className="item profileIcon">
-      <AccountCircleOutlinedIcon
-      sx={{height: 40, width: 40}}
-      >
-      </AccountCircleOutlinedIcon>
-      <div className={`profileDrawer ${props.isDarkMode && "dark"}`}>
-        <ul>
-          {personalItems.map((item, index)=>{
-            return (<li key={`personal${index}`}>{item}<Divider></Divider></li>)
-          })
-          }
-        </ul>
-      </div>
-      <div className="connectorV">
-      </div>
-      <div className="connectorH"></div>
-    </div>
+    ,<ProfileDrawer isDarkMode={props.isDarkMode} change={props.change}></ProfileDrawer>
   ];
   // Drawer
   const [state, setState] = useState({
@@ -106,7 +72,7 @@ export const Navbar = (props) => {
                         </div>
                     ) : (
                         <>
-                            {menuItems.map((item, index)=>{ return <>{item}</>})}
+                            {menuItems.map((item, index)=>{ return <div key={`menuItem${index}`}>{item}</div>})}
                         </>
                     )
                 }
