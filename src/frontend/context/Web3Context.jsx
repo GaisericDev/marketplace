@@ -6,7 +6,8 @@ import {CoinbaseWalletSDK} from "@coinbase/wallet-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import MarketplaceAbi from '../contractsData/Marketplace.json';
 import MarketplaceAddress from '../contractsData/Marketplace-address.json';
-
+import NFTAbi from '../contractsData/NFT.json';
+import NftAddress from '../contractsData/NFT-address.json';
 const Web3Context = React.createContext();
 
 export const useWeb3 = () => {
@@ -19,7 +20,9 @@ export const Web3ContextProvider = ({children}) => {
     const marketplaceAbi = MarketplaceAbi.abi;
     const marketplaceAddr = MarketplaceAddress.address;
     const [marketplace, setMarketplace] = useState({});
-
+    const nftAbi = NFTAbi.abi;
+    const nftAddr = NftAddress.address;
+    const [nft, setNft] = useState({});
     // Web3Modal provider options
     const providerOptions = {
             coinbasewallet: {
@@ -92,11 +95,28 @@ export const Web3ContextProvider = ({children}) => {
     // Load marketplace contract
     const loadMarketplace = async () => {
         if(web3Provider == null){return};
-        const signer = web3Provider.getSigner();
+        if(signer == null){
+            const signer = web3Provider.getSigner();
+            setSigner(signer);
+        }
         if(signer){
             const contract = new ethers.Contract(marketplaceAddr, marketplaceAbi, signer);
             if(contract){
                 setMarketplace(contract);
+            }
+        }
+    }
+    // Load nft contract
+    const loadNft = async () => {
+        if(web3Provider == null){return};
+        if(signer == null){
+            const signer = web3Provider.getSigner();
+            setSigner(signer);
+        }
+        if(signer){
+            const contract = new ethers.Contract(nftAddr, nftAbi, signer);
+            if(contract){
+                setNft(contract);
             }
         }
     }
@@ -110,6 +130,7 @@ export const Web3ContextProvider = ({children}) => {
     useEffect(()=>{
         if(Object.keys(marketplace).length === 0){
             loadMarketplace();
+            loadNft();
         } 
     },[web3Provider])
 
@@ -122,9 +143,9 @@ export const Web3ContextProvider = ({children}) => {
         ,logout
         ,toWei
         ,fromWei
-        ,marketplaceAddr
-        ,marketplaceAbi
+        ,toWei
         ,marketplace
+        ,nft
     }
   return (
     <Web3Context.Provider value={value}>

@@ -7,7 +7,7 @@ contract Marketplace is ReentrancyGuard{
     //State variables
     address payable public immutable feeAccount; // acc that has to receive fees
     uint public immutable feePercent; // % on sales
-    uint public itemCount;
+    uint public itemCount = 0;
 
     struct Item{
         uint itemId;
@@ -45,11 +45,12 @@ contract Marketplace is ReentrancyGuard{
 
     function makeItem(IERC721 _nft, uint _tokenId, uint _price) external nonReentrant {
         require(_price > 0, "Price must be greater than zero");
+        require(_tokenId == itemCount + 1, "Invalid tokenID");
         _nft.transferFrom(msg.sender, address(this), _tokenId);
         // increment itemCount
         itemCount ++;
-        items[itemCount -1] = Item (
-            itemCount -1,
+        items[itemCount] = Item (
+            itemCount,
             _tokenId,
             _price,
             payable(msg.sender),
@@ -58,7 +59,7 @@ contract Marketplace is ReentrancyGuard{
         );
 
         emit Offered(
-            itemCount -1,
+            itemCount,
             address(_nft),
             _tokenId,
             _price,
@@ -69,7 +70,7 @@ contract Marketplace is ReentrancyGuard{
     function purchaseItem(uint _itemId) external payable nonReentrant {
         uint _totalPrice = getTotalPrice(_itemId);
         Item storage item = items[_itemId];
-        require(_itemId >= 0 && _itemId <= itemCount, "Item does not exist");
+        require(_itemId > 0 && _itemId <= itemCount, "Item does not exist");
         require(msg.value >= _totalPrice, "Not enough ether to cover item price + market fee");
         require(!item.sold, "Item already sold");
         // pay seller and feeAccount
