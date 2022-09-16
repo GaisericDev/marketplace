@@ -6,8 +6,6 @@ import {CoinbaseWalletSDK} from "@coinbase/wallet-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import MarketplaceAbi from '../contractsData/Marketplace.json';
 import MarketplaceAddress from '../contractsData/Marketplace-address.json';
-import NFTAbi from '../contractsData/NFT.json';
-import NFTAddress from '../contractsData/NFT-address.json';
 
 const Web3Context = React.createContext();
 
