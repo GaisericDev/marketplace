@@ -97,7 +97,7 @@ export const MediaUploadField = (props) => {
     <>
     <div className="formField">
           <div className="labelWrap">
-            <label className='label'>Image, Video, Audio, or 3D Model {fileSize}</label>
+            <label className='label'>Image, Video, or Audio</label>
             <span className="labelDesc">File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG. Max size: 100 MB</span>
             {error && <span className="labelDesc error">{error}</span>}
           </div>
