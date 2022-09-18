@@ -1,9 +1,14 @@
+:root {
+  --navbar-height-extra: 70px;
+}
+
 .content {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 80vh;
     flex-direction: column;
+    padding-top: var(--navbar-height-extra);
   }
   
   .spinner {

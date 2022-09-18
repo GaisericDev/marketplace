@@ -24,7 +24,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home/>}/>
               <Route path="*" element={<NotFound></NotFound>}></Route>
-              <Route path="/create" element={<Create/>}></Route>
+              <Route path="/create" element={<Create isDarkMode={darkMode}/>}></Route>
             </Routes>
           </Router>
         </Web3ContextProvider>

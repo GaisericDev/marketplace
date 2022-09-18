@@ -13,7 +13,7 @@ async function main() {
     // deploy contracts
     let uri = "baseuri";
     let fee = 1
-    const nft = await NFT.deploy(uri);
+    const nft = await NFT.deploy();
     const marketplace = await Marketplace.deploy(fee);
 
     console.log("NFT contract address:", nft.address);
