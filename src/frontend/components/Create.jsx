@@ -12,11 +12,13 @@ export const Create = (props) => {
   const [description, setDescription] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFileType, setSelectedFileType] = useState(null);
+  const [fileSize, setFileSize] = useState(0);
   const [preview, setPreview] = useState();
   const [error, setError] = useState("");
   const [hasMultiMedia, setHasMultiMedia] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedCardFileType, setSelectedCardFileType] = useState(null);
+  const [cardFileSize, setCardFileSize] = useState(0);
   const [cardError, setCardError] = useState("");
   const [cardPreview, setCardPreview] = useState(null);
   const audioRef = useRef(); 
@@ -72,14 +74,17 @@ export const Create = (props) => {
     // Set file and file type
     setSelectedFile(e.target.files[0])
     setSelectedFileType(e.target.files[0].type)
+
+    // Set file size
+    setFileSize(e.target.files[0].size / 1024 / 1024);
   } 
 
   // Allowed file types
-  const allowedImages = ["image/png", "image/jpeg", "image/webp", "image/gif"];
+  const allowedImages = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"];
   const allowedAudio = ["audio/mpeg", "audio/ogg", "audio/wav"];
   const allowedVideo = ["video/webm", "video/mp4", "video/ogg"];
   const allowedFileTypes = allowedImages.concat(allowedAudio, allowedVideo);
-
+  const allowedFileSizeMB = 1;
   useEffect(() => {
     setError("");
     setHasMultiMedia(false);
@@ -88,7 +93,7 @@ export const Create = (props) => {
     setCardPreview(null);
     if(selectedFile == null || undefined || "") return;
     if(!allowedFileTypes.includes(selectedFileType)) setError(`File type ${selectedFileType} not allowed!`);
-    
+    if(fileSize > allowedFileSizeMB){setError(`File of size ${fileSize} exceeds the allowed ${allowedFileSizeMB}MB limit!`)}
     // create the preview
     const objectUrl = URL.createObjectURL(new Blob([selectedFile], {type: selectedFileType}));
     setPreview(objectUrl)
@@ -119,13 +124,16 @@ export const Create = (props) => {
     // Set file and file type
     setSelectedCard(e.target.files[0])
     setSelectedCardFileType(e.target.files[0].type)
+
+    // Set file size
+    setCardFileSize(e.target.files[0].size / 1024 / 1024);
   } 
 
   useEffect(() => {
     setCardError("");
     if(selectedCard == null || undefined || "") return;
-    if(!allowedImages.includes(selectedCardFileType)) setError(`File type ${selectedCardFileType} not allowed!`);
-    
+    if(!allowedImages.includes(selectedCardFileType)) setCardError(`File type ${selectedCardFileType} not allowed!`);
+    if(cardFileSize > allowedFileSizeMB){setCardError(`File of size ${cardFileSize} exceeds the allowed ${allowedFileSizeMB}MB limit!`)};
     // create the preview
     const objectUrl = URL.createObjectURL(new Blob([selectedCard], {type: selectedCardFileType}));
     setCardPreview(objectUrl);
@@ -146,9 +154,8 @@ export const Create = (props) => {
         </p>
         <div className="formField">
           <div className="labelWrap">
-            <label className='label'>Image, Video, Audio, or 3D Model</label>
-            <span className="labelDesc">File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG,
-            GLB, GLTF. Max size: 100 MB</span>
+            <label className='label'>Image, Video, Audio, or 3D Model {fileSize}</label>
+            <span className="labelDesc">File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG. Max size: 100 MB</span>
             {error && <span className="labelDesc error">{error}</span>}
           </div>
           <label className="fileLabel" htmlFor="media">
@@ -187,6 +194,7 @@ export const Create = (props) => {
             <div className="labelWrap">
               <label className='label'>Preview Image</label>
               <span className="labelDesc">Because you've included multimedia, you'll need to provide an image (PNG, JPG, or GIF) for the card display of your item.</span>
+              {cardError && <span className="labelDesc cardError">{cardError}</span>}
             </div>
             <label className="fileLabel" htmlFor="card">
               <div className={`fileUpload card ${props.isDarkMode && "placeHolderDark"}`}>
