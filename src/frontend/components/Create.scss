@@ -165,4 +165,62 @@
         font-size: 20px;
     }
 }
+
+.inputWrap {
+    display: flex;
+    border: 2px solid rgb(229 232 235);
+    border-radius: 10px;
+}
+
+.inputWrap > input {
+    background-color: transparent;
+    border: none;
+    flex: 1 0 0%;
+    height: 48px;
+    outline: none;
+    padding: 0 12px 0 12px;
+    min-width: 0px;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+}
+
+.inputWrap > textarea {
+    font-size: inherit;
+    line-height: inherit;
+    min-height: inherit;
+    width: 100%;
+    height: auto;
+    padding: 12px;
+    outline: none;
+    resize: vertical;
+    border: none;
+    background-color: transparent;
+    border-radius: 10px;
+    color: inherit;
+    font: inherit;
+    margin: 0px;
+}
+
+.inputWrap:hover{
+    animation: lightHighlight 300ms forwards;
+}
+
+.inputWrap.inputDark:hover {
+    animation: darkHighlight 300ms forwards; 
+}
+
+.inputDark {
+    border: 2px solid rgb(76 80 92);
+}
+
+@keyframes darkHighlight {
+    0%{border: 2px solid rgb(76 80 92);}
+    100%{border: 2px solid rgb(229 232 235);}
+}
+
+@keyframes lightHighlight {
+    0%{border: 2px solid 2px solid rgb(229 232 235);}
+    100%{border: 2px solid rgb(76 80 92);}
+}
     

@@ -3,6 +3,10 @@ import "./Create.scss";
 import {create as ipfsHttpClient} from 'ipfs-http-client'; 
 import { useWeb3 } from '../context/Web3Context';
 import { MediaUploadField } from './MediaUploadField';
+import { NameField } from './NameField';
+import { DescriptionField } from './DescriptionField';
+import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 export const Create = (props) => {
   const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
@@ -10,7 +14,7 @@ export const Create = (props) => {
   const [price, setPrice] = useState(null);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
- 
+  const [isLoading, setIsLoading] = useState(false);
   const {connectWallet, web3Provider, fromWei, marketplace, nft} = useWeb3();
   // Upload NFT image to ipfs
   const uploadToIpfs = async (event) => {
@@ -64,6 +68,11 @@ export const Create = (props) => {
           Required fields
         </p>
         <MediaUploadField isDarkMode={props.isDarkMode}></MediaUploadField>
+        <NameField isDarkMode={props.isDarkMode}></NameField>
+        <DescriptionField isDarkMode={props.isDarkMode}></DescriptionField>
+        <LoadingButton loading={isLoading} variant="contained" disableElevation>
+          Create
+        </LoadingButton>
       </form>
     </div>
   )
