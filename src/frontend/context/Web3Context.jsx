@@ -143,7 +143,6 @@ export const Web3ContextProvider = ({children}) => {
         ,logout
         ,toWei
         ,fromWei
-        ,toWei
         ,marketplace
         ,nft
     }
