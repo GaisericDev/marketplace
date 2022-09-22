@@ -54,7 +54,8 @@ export const MediaUploadField = (props) => {
       return;
     }
     // create the preview
-    const objectUrl = URL.createObjectURL(new Blob([selectedFile], {type: selectedFileType}));
+    const blob = new Blob([selectedFile], {type: selectedFileType});
+    const objectUrl = URL.createObjectURL(blob);
     setPreview(objectUrl);
 
     // handle audio
@@ -68,7 +69,8 @@ export const MediaUploadField = (props) => {
       setHasMultiMedia(true);
       videoRef.current.load();
     }
- 
+    // pass file to parent
+    props.updateFile(selectedFile);
     // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile])
