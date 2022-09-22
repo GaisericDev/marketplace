@@ -42,12 +42,20 @@ export const MediaUploadField = (props) => {
     setSelectedCard(null);
     setSelectedCardFileType(null);
     setCardPreview(null);
-    if(selectedFile == null || undefined || "") return;
-    if(!allowedFileTypes.includes(selectedFileType)) setError(`File type ${selectedFileType} not allowed!`);
-    if(fileSize > allowedFileSizeMB){setError(`File of size ${fileSize} exceeds the allowed ${allowedFileSizeMB}MB limit!`)}
+    if(selectedFile == null || undefined || ""){
+      return;
+    } 
+    if(!allowedFileTypes.includes(selectedFileType)){
+      setError(`File type ${selectedFileType} not allowed!`);
+      return;
+    } 
+    if(fileSize > allowedFileSizeMB){
+      setError(`File of size ${fileSize} exceeds the allowed ${allowedFileSizeMB}MB limit!`);
+      return;
+    }
     // create the preview
     const objectUrl = URL.createObjectURL(new Blob([selectedFile], {type: selectedFileType}));
-    setPreview(objectUrl)
+    setPreview(objectUrl);
 
     // handle audio
     if(selectedFileType.includes("audio")){

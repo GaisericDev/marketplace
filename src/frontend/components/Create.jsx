@@ -5,6 +5,7 @@ import { useWeb3 } from '../context/Web3Context';
 import { MediaUploadField } from './MediaUploadField';
 import { NameField } from './NameField';
 import { DescriptionField } from './DescriptionField';
+import { PriceField } from './PriceFIeld';
 import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -15,7 +16,7 @@ export const Create = (props) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {connectWallet, web3Provider, fromWei, marketplace, nft} = useWeb3();
+  const {connectWallet, web3Provider, fromWei, toWei, marketplace, nft} = useWeb3();
   // Upload NFT image to ipfs
   const uploadToIpfs = async (event) => {
     event.preventDefault();
@@ -33,9 +34,11 @@ export const Create = (props) => {
 
   // Create the NFT on the blockchain
   const createNFT = async () => {
-    if (!img || !price || !name || !description) return;
+    // if (!img || !price || !name || !description) return;
+    if(!price) return;
     try {
-      const result = await client.add(JSON.stringify({img, name, description}));
+      // const result = await client.add(JSON.stringify({img, name, description}));
+      const result = "testuri"
       mintThenList(result);
     } catch (error) {
       console.log(`Ipfs uri upload error: ${error.message}`);
@@ -45,14 +48,16 @@ export const Create = (props) => {
   // Mints NFT then lists on marketplace
   const mintThenList = async (result) => {
     const uri = `https://ipfs.infura.io/ipfs/${result.path}`
+    console.log("minting nft...");
     // mint nft 
     await(await nft.mint(uri)).wait()
+    console.log("mint success");
     // get tokenId of new nft 
     const id = await nft.tokenCount()
     // approve marketplace to spend nft
     await(await nft.setApprovalForAll(marketplace.address, true)).wait()
     // add nft to marketplace
-    const listingPrice = ethers.utils.parseEther(price.toString())
+    const listingPrice = toWei(price.toString())
     await(await marketplace.makeItem(nft.address, id, listingPrice)).wait()
   }
 
@@ -61,6 +66,7 @@ export const Create = (props) => {
     <div className="create">
       <header className="title">
         <h1 className="titleH1">Create New Item</h1>
+        <h1>Price: {price}</h1>
       </header>
       <form className="createForm">
         <p className={`labelDesc ${props.isDarkMode ? "darkLabel" : ""}`}>
@@ -70,7 +76,8 @@ export const Create = (props) => {
         <MediaUploadField isDarkMode={props.isDarkMode}></MediaUploadField>
         <NameField isDarkMode={props.isDarkMode}></NameField>
         <DescriptionField isDarkMode={props.isDarkMode}></DescriptionField>
-        <LoadingButton loading={isLoading} variant="contained" disableElevation>
+        <PriceField updatePrice={(result) => setPrice(result)} isDarkMode={props.isDarkMode}></PriceField>
+        <LoadingButton onClick={()=>{createNFT()}} loading={isLoading} variant="contained" disableElevation>
           Create
         </LoadingButton>
       </form>
