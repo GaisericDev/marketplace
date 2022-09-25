@@ -35,7 +35,19 @@ export const MediaUploadField = (props) => {
   const allowedAudio = ["audio/mpeg", "audio/ogg", "audio/wav"];
   const allowedVideo = ["video/webm", "video/mp4", "video/ogg"];
   const allowedFileTypes = allowedImages.concat(allowedAudio, allowedVideo);
-  const allowedFileSizeMB = 10;
+  const allowedFileSizeMB = 1.5; //2090000 * (3 / 4) - 2)/1024**2
+  
+  const blobToBase64 = (blob) => {
+    // convert blob to base64
+    let reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      let base64Data = reader.result;
+      // if not error, pass blob to parent
+      props.updateMedia(base64Data);
+    }
+  }
+  
   useEffect(() => {
     setError("");
     setHasMultiMedia(false);
@@ -62,15 +74,18 @@ export const MediaUploadField = (props) => {
     if(selectedFileType.includes("audio")){
       setHasMultiMedia(true);
       audioRef.current.load();
+      blobToBase64(blob);
     }
 
     // handle video
     if(selectedFileType.includes("video")){
       setHasMultiMedia(true);
       videoRef.current.load();
+      blobToBase64(blob);
     }
     // pass file to parent
     props.updateFile(selectedFile);
+
     // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile])
@@ -86,8 +101,8 @@ export const MediaUploadField = (props) => {
     setSelectedCard(e.target.files[0])
     setSelectedCardFileType(e.target.files[0].type)
 
-    // Set file size
-    setCardFileSize(e.target.files[0].size / 1024 / 1024);
+    // Set file size of card
+    setCardFileSize(e.target.files[0].size / 1024 ** 2);
   } 
 
   useEffect(() => {
@@ -98,7 +113,9 @@ export const MediaUploadField = (props) => {
     // create the preview
     const objectUrl = URL.createObjectURL(new Blob([selectedCard], {type: selectedCardFileType}));
     setCardPreview(objectUrl);
- 
+    // Pass card img to parent if exists
+    props.updateMediaImg(selectedCard);
+    console.log("media img", selectedCard);
     // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedCard])
