@@ -83,11 +83,6 @@ export const Create = (props) => {
     <div className="create">
       <header className="title">
         <h1 className="titleH1">Create New Item</h1>
-        <h1>{file ? "File uploaded" : "No file uploaded"}</h1>
-        <h1>{name ? name : "No name"}</h1>
-        <h1>{description ? description : "No description"}</h1>
-        <h1>{price ? price : "No price"}</h1>
-        <h1>{mediaImg ? "Media img uploaded" : "No media img uploaded"}</h1>
       </header>
       <form className="createForm">
         <p className={`labelDesc ${props.isDarkMode ? "darkLabel" : ""}`}>
